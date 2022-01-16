@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/hackathon-2022/k8s-faas-plugin/cmd"
+)
 
 func main() {
-	_ = fmt.Sprintf("Hello, World")
+	_ = cmd.Execute()
 }
