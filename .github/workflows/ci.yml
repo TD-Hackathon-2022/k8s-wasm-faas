@@ -19,16 +19,22 @@ jobs:
           name: kubectl-faas
           path: ${{ github.workspace }}/out/kubectl-faas
           retention-days: 1
-#  deploy:
-#    runs-on: ubuntu-latest
-#    needs: build
-#    concurrency: deploy-lock
-#    steps:
-#      - uses: actions/download-artifact@v2
-#        with:
-#          name: kubectl-faas
-#      - name: deploy
-#        run: |
-#
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    concurrency: deploy-lock
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: kubectl-faas
+      - name: Deploy
+        run: |
+          mkdir ~/.ssh/
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ${{ github.workspace }}/private-key
+          chmod 600 ${{ github.workspace }}/private-key
+
+          scp -r -i ${{ github.workspace }}/private-key ${{ github.workspace }}/kubectl-faas ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/usr/local/bin
 
 
