@@ -1,0 +1,34 @@
+name: CI
+on: [ push, workflow_dispatch ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.17.4'
+      - name: Test
+        run: go test ./...
+      - name: Build
+        run: GOOS=linux  GOARCH=amd64 go build -o out/kubectl-faas
+      - uses: actions/upload-artifact@v2
+        with:
+          name: kubectl-faas
+          path: ${{ github.workspace }}/out/kubectl-faas
+          retention-days: 1
+#  deploy:
+#    runs-on: ubuntu-latest
+#    needs: build
+#    concurrency: deploy-lock
+#    steps:
+#      - uses: actions/download-artifact@v2
+#        with:
+#          name: kubectl-faas
+#      - name: deploy
+#        run: |
+#
+
+
