@@ -11,6 +11,10 @@ var (
 	}
 )
 
+func init() {
+	rootCmd.AddCommand(submitCmd)
+}
+
 func Execute() error {
 	return rootCmd.Execute()
 }
