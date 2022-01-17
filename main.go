@@ -8,12 +8,10 @@ import (
 	kubeInformers "k8s.io/client-go/informers"
 	"k8s.io/client-go/informers/internalinterfaces"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/util/homedir"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"syscall"
 	"time"
 )
@@ -24,9 +22,8 @@ var faasLabels = map[string]string{
 }
 
 func main() {
-	home := homedir.HomeDir()
+	config, err := rest.InClusterConfig()
 
-	config, err := clientcmd.BuildConfigFromFlags("", filepath.Join(home, ".kube", "config"))
 	if err != nil {
 		fmt.Println("load k8s config error")
 		os.Exit(1)
