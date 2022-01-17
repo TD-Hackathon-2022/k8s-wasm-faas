@@ -43,7 +43,7 @@ jobs:
           name: k8s-faas-builder-controller
           path: ${{ github.workspace }}/out/k8s-faas-builder-controller
           retention-days: 1
-  publish:
+  push:
     runs-on: ubuntu-latest
     needs: build
     steps:
