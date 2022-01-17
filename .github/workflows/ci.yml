@@ -83,12 +83,11 @@ jobs:
           chmod 600 ${{ github.workspace }}/private-key
 
           echo "${{ secrets.BUILDER_CONTROLLER_DEPLOYMENT_FILE }}" > ${{ github.workspace }}/faas-builder-controller-deployment.yaml
-          sed -i '' 's/<<TAG>>/v${{ github.run_number }}/g' \
-              ${{ github.workspace }}/faas-builder-controller-deployment.yaml > ${{ github.workspace }}/faas-builder-controller-deployment.yaml
+          sed -i '' 's/<<TAG>>/v${{ github.run_number }}/g' ${{ github.workspace }}/faas-builder-controller-deployment.yaml
 
           scp -r -i ${{ github.workspace }}/private-key \
             ${{ github.workspace }}/faas-builder-controller-deployment.yaml \
             ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/opt/faas-builder-controller-deployment.yaml
 
           ssh -i ${{ github.workspace }}/private-key "kubectl apply -f /opt/faas-builder-controller-deployment.yaml"
-          ssh -i ${{ github.workspace }}/private-key "rm /opt/faas-builder-controller-deployment.yaml"
+          ssh -i ${{ github.workspace }}/private-key "rm -f /opt/faas-builder-controller-deployment.yaml"
