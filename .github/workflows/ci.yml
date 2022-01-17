@@ -83,7 +83,7 @@ jobs:
           chmod 600 ${{ github.workspace }}/private-key
 
           echo "${{ secrets.BUILDER_CONTROLLER_DEPLOYMENT_FILE }}" > ${{ github.workspace }}/faas-builder-controller-deployment.yaml
-          sed -i '' 's/<<TAG>>/v${{ github.run_number }}/g' ${{ github.workspace }}/faas-builder-controller-deployment.yaml
+          sed -i 's/<<TAG>>/v${{ github.run_number }}/g' ${{ github.workspace }}/faas-builder-controller-deployment.yaml
 
           scp -r -i ${{ github.workspace }}/private-key \
             ${{ github.workspace }}/faas-builder-controller-deployment.yaml \
