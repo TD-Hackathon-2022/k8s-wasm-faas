@@ -43,7 +43,7 @@ func main() {
 	})
 
 	stopCh := SetupSignalHandler()
-kubeInformerFactory.Start(stopCh)
+	kubeInformerFactory.Start(stopCh)
 	<-stopCh
 }
 
