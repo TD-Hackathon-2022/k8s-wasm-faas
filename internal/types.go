@@ -1,4 +1,4 @@
-package service
+package internal
 
 var faasLabels = map[string]string{
 	"runtime": "wasm",

@@ -6,8 +6,8 @@ import (
 	"path"
 	"path/filepath"
 
-	"github.com/hackathon-2022/k8s-faas-plugin/service"
-	"github.com/hackathon-2022/k8s-faas-plugin/utils"
+	"github.com/hackathon-2022/k8s-faas-plugin/internal"
+	"github.com/hackathon-2022/k8s-faas-plugin/tools"
 	"github.com/spf13/cobra"
 )
 
@@ -20,10 +20,10 @@ var (
 			validArgs(args)
 
 			faasScriptPath := getAbsFaasScriptPath(args[0])
-			filename := utils.GetFileName(faasScriptPath)
-			fileContent := utils.ReadAll(faasScriptPath)
+			filename := tools.GetFileName(faasScriptPath)
+			fileContent := tools.ReadAll(faasScriptPath)
 
-			service.CreateConfigMap(filename, fileContent)
+			internal.CreateConfigMap(filename, fileContent)
 		},
 	}
 )
