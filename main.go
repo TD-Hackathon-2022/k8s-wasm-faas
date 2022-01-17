@@ -20,13 +20,15 @@ func main() {
 
 	config, err := clientcmd.BuildConfigFromFlags("", filepath.Join(home, ".kube", "config"))
 	if err != nil {
-		panic(err)
+		fmt.Println("load k8s config error")
+		os.Exit(1)
 	}
 
 	clientset, err := kubernetes.NewForConfig(config)
 
 	if err != nil {
-		panic(err)
+		fmt.Println("create k8s client error")
+		os.Exit(1)
 	}
 
 	kubeInformerFactory := kubeInformers.NewSharedInformerFactory(clientset, time.Second*30)
@@ -42,6 +44,7 @@ func main() {
 
 	stopCh := SetupSignalHandler()
 	kubeInformerFactory.Start(stopCh)
+	<-stopCh
 }
 
 func SetupSignalHandler() (stopCh <-chan struct{}) {
