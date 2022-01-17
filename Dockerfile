@@ -4,4 +4,6 @@ WORKDIR /opt/k8s-faas-builder-controller
 
 COPY k8s-faas-builder-controller .
 
+RUN chmod u+x ./k8s-faas-builder-controller
+
 CMD ["./k8s-faas-builder-controller"]
