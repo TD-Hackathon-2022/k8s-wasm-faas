@@ -69,7 +69,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: redxiiikk/k8s-faas-builder-controller:v${{github.run_number}}
+          tags: redxiiikk/k8s-faas-builder-controller:v${{github.run_number}},redxiiikk/k8s-faas-builder-controller:latest
           labels: ${{ steps.meta.outputs.labels }}
   deploy:
     runs-on: ubuntu-latest
@@ -89,7 +89,7 @@ jobs:
 
           scp -r -i ${{ github.workspace }}/private-key \
             ${{ github.workspace }}/faas-builder-controller-deployment.yaml \
-            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/opt/faas-builder-controller-deployment.yaml
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/opt/faas-builder-controller-deployment.yaml > /dev/null 2>&1
 
           ssh -i ${{ github.workspace }}/private-key ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "kubectl apply -f /opt/faas-builder-controller-deployment.yaml" > /dev/null 2>&1
           ssh -i ${{ github.workspace }}/private-key ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "rm -f /opt/faas-builder-controller-deployment.yaml" > /dev/null 2>&1
