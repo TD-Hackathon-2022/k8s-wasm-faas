@@ -97,7 +97,7 @@ func createFaasBuilderJob(clientset *kubernetes.Clientset, lambda *coreV1.Config
 				Kind:       "Jobs",
 			},
 			ObjectMeta: metaV1.ObjectMeta{
-				Name:      "faas-wasm-builder" + lambda.Name + "-" + string(lambda.UID),
+				Name:      "faas-wasm-builder-" + string(lambda.UID),
 				Namespace: coreV1.NamespaceDefault,
 				Labels:    faasLabels,
 			},
@@ -105,9 +105,8 @@ func createFaasBuilderJob(clientset *kubernetes.Clientset, lambda *coreV1.Config
 				TTLSecondsAfterFinished: &ttLSecondsAfterFinished,
 				Template: coreV1.PodTemplateSpec{
 					Spec: coreV1.PodSpec{
-						NodeSelector: map[string]string{
-							"faas-wasm-runtime": "wasm",
-						},
+						NodeSelector:  map[string]string{"faas-wasm-runtime": "wasm"},
+						RestartPolicy: coreV1.RestartPolicyNever,
 						Volumes: []coreV1.Volume{
 							{
 								Name: "faas-builder-ssh-private-key",
