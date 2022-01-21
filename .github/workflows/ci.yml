@@ -28,7 +28,7 @@ jobs:
         run: go test ./...
   build:
     runs-on: ubuntu-latest
-    need: check
+    needs: check
     steps:
       - uses: actions/checkout@v2
         with:
