@@ -80,7 +80,7 @@ func ExecInPod(podName string, params []string) (string, string, error) {
 		SubResource("exec").
 		VersionedParams(
 			&coreV1.PodExecOptions{
-				Command: []string{"-- " + strings.Join(params, "=")},
+				Command: params,
 				Stdin:   false,
 				Stdout:  true,
 				Stderr:  true,
@@ -131,7 +131,6 @@ func WaitPodStatus(podName string) {
 		UpdateFunc: func(_, newObj interface{}) {
 			newPod := newObj.(*coreV1.Pod)
 			if newPod.Status.Phase == coreV1.PodRunning {
-				fmt.Println("build pod status run...")
 				close(stopChan)
 			}
 		},
