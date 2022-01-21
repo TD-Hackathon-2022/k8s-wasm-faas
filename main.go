@@ -87,6 +87,7 @@ func createFaasBuilderJob(clientset *kubernetes.Clientset, lambda *coreV1.Config
 		targetPort                    = os.Getenv("TARGET_PORT")
 		targetUser                    = os.Getenv("TARGET_USER")
 		targetPath                    = os.Getenv("TARGET_PATH")
+		hostPathDir                   = coreV1.HostPathDirectory
 	)
 
 	_, err := clientset.BatchV1().Jobs(coreV1.NamespaceDefault).Create(
@@ -125,6 +126,15 @@ func createFaasBuilderJob(clientset *kubernetes.Clientset, lambda *coreV1.Config
 									},
 								},
 							},
+							{
+								Name: "cargo",
+								VolumeSource: coreV1.VolumeSource{
+									HostPath: &coreV1.HostPathVolumeSource{
+										Type: &hostPathDir,
+										Path: "/root/cargo-cache",
+									},
+								},
+							},
 						},
 						Containers: []coreV1.Container{
 							{
@@ -140,6 +150,11 @@ func createFaasBuilderJob(clientset *kubernetes.Clientset, lambda *coreV1.Config
 										Name:      "lambda",
 										ReadOnly:  true,
 										MountPath: "/opt/k8s-faas-builder/lambda",
+									},
+									{
+										Name:      "cargo",
+										ReadOnly:  false,
+										MountPath: "/root/.cargo/registry",
 									},
 								},
 								Env: []coreV1.EnvVar{
