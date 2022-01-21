@@ -14,6 +14,7 @@ var (
 func init() {
 	rootCmd.AddCommand(submitCmd)
 	rootCmd.AddCommand(listCmd)
+	rootCmd.AddCommand(runCmd)
 }
 
 func Execute() error {
