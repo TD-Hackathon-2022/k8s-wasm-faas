@@ -1,0 +1,26 @@
+name: CI
+on: [ push, workflow_dispatch ]
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1.12.0
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3.6.2
+        with:
+          images: redxiiikk/k8s-faas-builder
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2.7.0
+        with:
+          context: .
+          push: true
+          tags: redxiiikk/k8s-faas-builder:v${{github.run_number}},redxiiikk/k8s-faas-builder:latest
+          labels: ${{ steps.meta.outputs.labels }}
