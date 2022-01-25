@@ -1,0 +1,64 @@
+name: CI
+on: [ push, workflow_dispatch ]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.17.4'
+      - name: Formatting
+        run: |
+          gofmt -s -w .
+      - name: Commit
+        run: |
+          if [ -z "$(git status --porcelain)" ]
+          then
+              echo "nothing to update."
+          else
+              git config --global user.name 'redxiiikk[action bot]'
+              git config --global user.email '72877527+redxiiikk@users.noreply.github.com'
+              git commit -am "style: automatic formatting by action"
+              git push
+          fi
+      - name: Test
+        run: go test ./...
+  build:
+    runs-on: ubuntu-latest
+    needs: check
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.17.4'
+      - name: Build
+        run: GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o out/kubectl-faas
+      - uses: actions/upload-artifact@v2
+        with:
+          name: kubectl-faas
+          path: ${{ github.workspace }}/out/kubectl-faas
+          retention-days: 1
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    concurrency: deploy-lock
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: kubectl-faas
+      - name: Deploy
+        run: |
+          mkdir ~/.ssh/
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ${{ github.workspace }}/private-key
+          chmod 600 ${{ github.workspace }}/private-key
+
+          scp -r -i ${{ github.workspace }}/private-key ${{ github.workspace }}/kubectl-faas ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/usr/local/bin
+
+
