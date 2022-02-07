@@ -19,7 +19,9 @@ jobs:
         with:
           go-version: '^1.17.4'
       - name: Test
-        run: go test ./...
+        run: |
+          cd builder-controller
+          go test ./...
   build:
     runs-on: ubuntu-latest
     needs: check
