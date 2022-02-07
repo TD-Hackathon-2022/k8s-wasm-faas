@@ -2,27 +2,34 @@
 
 ## 概述
 
-实现 WASM + WASI 来 k8s 的 runtime, 试图解决常规 Faas 中冷启动延时的问题.
+实现 WASM + WASI 来 k8s 的 runtime, 试图解决常规 FaaS 中冷启动延时的问题.
 
 ### 整体架构
 
-整体分为两大部分: runtime + Faas 支撑组件 (cli plugin, builder controller, buider job)
+整体分为两大部分:
 
-runtime 实现在 [TD-Hackathon-2022/cri-wasm-runtime](https://github.com/TD-Hackathon-2022/cri-wasm-runtime)
+1. runtime 实现在 [TD-Hackathon-2022/cri-wasm-runtime](https://github.com/TD-Hackathon-2022/cri-wasm-runtime)
 
-Faas 组件在本仓库中 ([TD-Hackathon-2022/k8s-wasm-faas](https://github.com/TD-Hackathon-2022/k8s-wasm-faas))
+2. FaaS 组件相关实现在 [TD-Hackathon-2022/k8s-wasm-faas](https://github.com/TD-Hackathon-2022/k8s-wasm-faas)
 
-### Faas 组件
+FaaS 组件分为三部分:
+
+1. kubectl plugin 交互入口，可以提交本地的 FaaS 函数, 查看集群中已经存储的 FaaS 函数, 执行 FaaS 函数
+2. builder controller 编译控制器, 监听存储在 configmaps 中的 FaaS 函数, 然后下发编译任务
+3. builder 将用户编写的 FaaS 脚本编译为 WASM 可执行文件（目前只支持 Rust 语言的脚本编译)
+
+### FaaS 组件
 
 ```text
 ./k8s-wasm-faas
 ├── README.md
-├── builder            # 负责编译 rust faas script
+├── builder            # 编译 rust faas script
 ├── builder-controller # 监听 configmap 中存储的 faas script, 并下发编译任务
-├── k8s-wasm-faas.iml
-└── plugin
+└── plugin             # kubectl plugin
 ```
 
 ## 编译与运行
+
+### kubectl plugin
 
 
