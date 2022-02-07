@@ -1,8 +1,8 @@
 name: Code Style Format
 on: 
   push:
-    path:
-      - "**.go"
+    paths:
+      - '**.go'
   workflow_dispatch:
 jobs:
   check:
