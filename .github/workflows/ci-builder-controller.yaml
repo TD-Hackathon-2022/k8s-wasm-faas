@@ -1,0 +1,71 @@
+name: CI
+on: 
+  push:
+    branches:    
+      - 'master'
+    paths:
+      - 'builder-controller/**'
+      - '!builder-controller/README.md'
+      - '!builder-controller/.gitignore'
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.17.4'
+     - name: Test
+       run: go test ./...
+  build:
+    runs-on: ubuntu-latest
+    needs: check
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.17.4'
+      - name: Build
+        run: |
+          cd builder-controller
+          GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o out/k8s-faas-builder-controller
+      - uses: actions/upload-artifact@v2
+        with:
+          name: k8s-faas-builder-controller
+          path: ${{ github.workspace }}/builder-controller/out/k8s-faas-builder-controller
+          retention-days: 1
+  push:
+    runs-on: ubuntu-latest
+    needs: build
+    concurrency: push-lock
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v2
+        with:
+          name: k8s-faas-builder-controller
+          path: ${{ github.workspace }}/builder-controller
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1.12.0
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3.6.2
+        with:
+          images: redxiiikk/k8s-faas-builder-controller
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2.8.0
+        with:
+          context: ./builder-controller
+          push: true
+          tags: redxiiikk/k8s-faas-builder-controller:v${{github.run_number}},redxiiikk/k8s-faas-builder-controller:latest
+          labels: ${{ steps.meta.outputs.labels }}
+ 
