@@ -1,4 +1,4 @@
-name: CI
+name: Builder Controller CI
 on: 
   push:
     branches:    
