@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: "weekly"
       timezone: "Asia/Shanghai"
-  - package-ecosystem: "gomod"
+  - package-ecosystem: "cargo"
     directory: "/builder"
     schedule:
       interval: "weekly"
