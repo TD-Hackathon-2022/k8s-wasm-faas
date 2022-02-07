@@ -1,4 +1,4 @@
-# k8s WASM FaaS Plugin
+# k8s WASM FaaS Kubectl Plugin
 
 ## 使用
 
