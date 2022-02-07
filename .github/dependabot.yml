@@ -6,7 +6,17 @@ updates:
       interval: "weekly"
       timezone: "Asia/Shanghai"
   - package-ecosystem: "gomod"
-    directory: "/"
+    directory: "/builder"
+    schedule:
+      interval: "weekly"
+      timezone: "Asia/Shanghai"
+  - package-ecosystem: "gomod"
+    directory: "/builder-controller"
+    schedule:
+      interval: "weekly"
+      timezone: "Asia/Shanghai"
+  - package-ecosystem: "gomod"
+    directory: "/plugin"
     schedule:
       interval: "weekly"
       timezone: "Asia/Shanghai"
