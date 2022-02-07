@@ -1,5 +1,9 @@
 name: Code Style Format
-on: [ push, workflow_dispatch ]
+on: 
+  push:
+    path:
+      - "**.go"
+  workflow_dispatch:
 jobs:
   check:
     runs-on: ubuntu-latest
