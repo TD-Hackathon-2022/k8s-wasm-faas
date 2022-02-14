@@ -26,7 +26,7 @@ jobs:
         with:
           images: redxiiikk/k8s-faas-builder
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2.7.0
+        uses: docker/build-push-action@v2.9.0
         with:
           context: ./builder
           push: true
