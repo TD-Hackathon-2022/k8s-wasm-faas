@@ -3,7 +3,7 @@ module github.com/hackathon-2022/k8s-faas-plugin
 go 1.17
 
 require (
-	github.com/spf13/cobra v1.4.0
+	github.com/spf13/cobra v1.5.0
 	k8s.io/api v0.23.1
 	k8s.io/apimachinery v0.23.1
 	k8s.io/client-go v0.23.1
