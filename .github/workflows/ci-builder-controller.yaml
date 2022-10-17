@@ -36,7 +36,7 @@ jobs:
         run: |
           cd builder-controller
           GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o out/k8s-faas-builder-controller
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: k8s-faas-builder-controller
           path: ${{ github.workspace }}/builder-controller/out/k8s-faas-builder-controller
