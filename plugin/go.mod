@@ -3,7 +3,7 @@ module github.com/hackathon-2022/k8s-faas-plugin
 go 1.17
 
 require (
-	github.com/spf13/cobra v1.4.0
+	github.com/spf13/cobra v1.6.0
 	k8s.io/api v0.23.1
 	k8s.io/apimachinery v0.25.3
 	k8s.io/client-go v0.23.1
@@ -19,7 +19,7 @@ require (
 	github.com/google/gofuzz v1.1.0 // indirect
 	github.com/googleapis/gnostic v0.5.5 // indirect
 	github.com/imdario/mergo v0.3.5 // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/moby/spdystream v0.2.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
