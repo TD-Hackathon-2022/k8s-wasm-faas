@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/spf13/cobra v1.6.0
 	k8s.io/api v0.25.3
-	k8s.io/apimachinery v0.25.3
+	k8s.io/apimachinery v0.25.4
 	k8s.io/client-go v0.25.3
 )
 
