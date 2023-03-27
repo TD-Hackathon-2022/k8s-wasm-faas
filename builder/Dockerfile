@@ -17,7 +17,5 @@ RUN apt-get update -y && \
 VOLUME /opt/k8s-faas-builder/lambda
 
 COPY . .
-
 RUN chmod u+x ./build.sh
-
 CMD ["./build.sh"]
