@@ -1,7 +1,6 @@
 FROM debian:buster-slim
 
 WORKDIR /opt/k8s-faas-builder
-
 ENV FUNCTION_NAME="lambda-function" \
     TARGET_HOST="12.0.0.1" \
     TARGET_PORT="22" \
