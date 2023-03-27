@@ -13,11 +13,7 @@ RUN apt-get update -y && \
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- --default-toolchain none -y && \
     /root/.cargo/bin/rustup toolchain install nightly --allow-downgrade --profile minimal --component clippy && \
     /root/.cargo/bin/rustup target add wasm32-wasi
-
 VOLUME /opt/k8s-faas-builder/lambda
-
 COPY . .
-
 RUN chmod u+x ./build.sh
-
 CMD ["./build.sh"]
