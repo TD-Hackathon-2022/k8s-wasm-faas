@@ -10,7 +10,6 @@ source "$HOME/.cargo/env"
 
 mkdir ~/.ssh/
 ssh-keyscan -H "$TARGET_HOST" >> ~/.ssh/known_hosts
-
 cp "/opt/k8s-faas-builder/lambda/${FUNCTION_NAME}" /opt/k8s-faas-builder/src/lambda.rs
 
 cargo build --target wasm32-wasi
