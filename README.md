@@ -1,4 +1,4 @@
-# k8s + wam = faas
+# k8s + WASM = faas
 
 ## 概述
 
