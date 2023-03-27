@@ -27,3 +27,4 @@ FaaS 组件分为三部分:
 ├── builder-controller # 监听 configmap 中存储的 faas script, 并下发编译任务
 └── plugin             # kubectl plugin
 ```
+--- DUIZHANG
